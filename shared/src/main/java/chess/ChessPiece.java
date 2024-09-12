@@ -47,6 +47,25 @@ public class ChessPiece {
         //throw new RuntimeException("Not implemented");
     }
 
+    public String getSymbol() {
+        switch (type) {
+            case KING:
+                return pieceColor == ChessGame.TeamColor.BLACK ? "k" : "K";
+            case QUEEN:
+                return pieceColor == ChessGame.TeamColor.BLACK ? "q" : "Q";
+            case BISHOP:
+                return pieceColor == ChessGame.TeamColor.BLACK ? "b" : "B";
+            case KNIGHT:
+                return pieceColor == ChessGame.TeamColor.BLACK ? "n" : "N";
+            case ROOK:
+                return pieceColor == ChessGame.TeamColor.BLACK ? "r" : "R";
+            case PAWN:
+                return pieceColor == ChessGame.TeamColor.BLACK ? "p" : "P";
+            default:
+                throw new IllegalArgumentException("Unknown piece type");
+        }
+    }
+
     /**
      * Calculates all the positions a chess piece can move to
      * Does not take into account moves that are illegal due to leaving the king in
