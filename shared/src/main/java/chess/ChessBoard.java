@@ -102,4 +102,20 @@ public class ChessBoard {
         }
         //throw new RuntimeException("Not implemented");
     }
+    @Override
+    public String toString() {
+        StringBuilder boardString = new StringBuilder();
+        for (int row = 0; row < 8; row++) {
+            for (int col = 0; col < 8; col++) {
+                ChessPiece piece = board[row][col];
+                if (piece == null) {
+                    boardString.append("| |");
+                } else {
+                    boardString.append("|").append(piece.getSymbol()).append("|");
+                }
+            }
+            boardString.append("\n");
+        }
+        return boardString.toString();
+    }
 }
