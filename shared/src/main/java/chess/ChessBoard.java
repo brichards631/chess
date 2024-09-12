@@ -8,9 +8,13 @@ package chess;
  */
 public class ChessBoard {
 
+    private ChessPiece[][] board;
+
     public ChessBoard() {
-        
+        // Initialize board array
+        board = new ChessPiece[8][8];
     }
+
 
     /**
      * Adds a chess piece to the chessboard
@@ -19,7 +23,10 @@ public class ChessBoard {
      * @param piece    the piece to add
      */
     public void addPiece(ChessPosition position, ChessPiece piece) {
-        throw new RuntimeException("Not implemented");
+        int row = 8 - position.getRow();
+        int col = position.getColumn() - 1;
+        board[row][col] = piece;
+        //throw new RuntimeException("Not implemented");
     }
 
     /**
@@ -30,7 +37,10 @@ public class ChessBoard {
      * position
      */
     public ChessPiece getPiece(ChessPosition position) {
-        throw new RuntimeException("Not implemented");
+        int row = 8 - position.getRow();
+        int col = position.getColumn() - 1;
+        return board[row][col];
+        //throw new RuntimeException("Not implemented");
     }
 
     /**
@@ -38,6 +48,20 @@ public class ChessBoard {
      * (How the game of chess normally starts)
      */
     public void resetBoard() {
-        throw new RuntimeException("Not implemented");
+        // Set the default chess positions for black pieces (top of the board)
+        board[0] = new ChessPiece[]{ChessPiece.ROOK, ChessPiece.KNIGHT, ChessPiece.BISHOP, ChessPiece.QUEEN, ChessPiece.KING, ChessPiece.BISHOP, ChessPiece.KNIGHT, ChessPiece.ROOK};
+        board[1] = new ChessPiece[]{ChessPiece.PAWN, ChessPiece.PAWN, ChessPiece.PAWN, ChessPiece.PAWN, ChessPiece.PAWN, ChessPiece.PAWN, ChessPiece.PAWN, ChessPiece.PAWN};
+
+        // Set the default chess positions for white pieces (bottom of the board)
+        board[7] = new ChessPiece[]{ChessPiece.ROOK, ChessPiece.KNIGHT, ChessPiece.BISHOP, ChessPiece.QUEEN, ChessPiece.KING, ChessPiece.BISHOP, ChessPiece.KNIGHT, ChessPiece.ROOK};
+        board[6] = new ChessPiece[]{ChessPiece.PAWN, ChessPiece.PAWN, ChessPiece.PAWN, ChessPiece.PAWN, ChessPiece.PAWN, ChessPiece.PAWN, ChessPiece.PAWN, ChessPiece.PAWN};
+
+        // Clear the rest of the board (empty positions in the middle)
+        for (int i = 2; i < 6; i++) {
+            for (int j = 0; j < 8; j++) {
+                board[i][j] = null;
+            }
+        }
+        //throw new RuntimeException("Not implemented");
     }
 }
