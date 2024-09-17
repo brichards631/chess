@@ -12,6 +12,9 @@ public class ChessPosition {
     private int col;
 
     public ChessPosition(int row, int col) {
+        if (row < 1 || row > 8 || col < 1 || col > 8) {
+            throw new IllegalArgumentException("Row and column must be between 1 and 8");
+        }
         this.row = row;
         this.col = col;
     }
@@ -32,5 +35,19 @@ public class ChessPosition {
     public int getColumn() {
         return col;
         //throw new RuntimeException("Not implemented");
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        ChessPosition that = (ChessPosition) o;
+        return row == that.row && col == that.col;
+    }
+
+    //  hashCode
+    @Override
+    public int hashCode() {
+        return 31 * row + col;
     }
 }
