@@ -118,4 +118,24 @@ public class ChessBoard {
         }
         return boardString.toString();
     }
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true; // Same object reference
+        if (o == null || getClass() != o.getClass()) return false; // Null or different class
+
+        ChessBoard that = (ChessBoard) o;
+
+        // Compare each position on the board
+        for (int row = 0; row < 8; row++) {
+            for (int col = 0; col < 8; col++) {
+                ChessPiece thisPiece = this.board[row][col];
+                ChessPiece thatPiece = that.board[row][col];
+
+                // Compare pieces at this position
+                if (thisPiece == null && thatPiece != null) return false; // Mismatch: one is null
+                if (thisPiece != null && !thisPiece.equals(thatPiece)) return false; // Pieces are not equal
+            }
+        }
+        return true; // If all pieces match, the boards are equal
+    }
 }

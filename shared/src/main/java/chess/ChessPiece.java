@@ -77,4 +77,22 @@ public class ChessPiece {
         return new ArrayList<>();
         //throw new RuntimeException("Not implemented");
     }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true; // Same reference
+        if (o == null || getClass() != o.getClass()) return false; // Null or different class
+
+        ChessPiece that = (ChessPiece) o;
+
+        // Compare both the piece type and color
+        return pieceColor == that.pieceColor && type == that.type;
+    }
+
+    @Override
+    public int hashCode() {
+        int result = pieceColor.hashCode();
+        result = 31 * result + type.hashCode();
+        return result;
+    }
 }
