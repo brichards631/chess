@@ -124,7 +124,7 @@ public class ChessPiece {
         if (startCol > 1 && board.getPiece(leftDiagonal) != null && board.getPiece(leftDiagonal).getTeamColor() != pieceColor) {
             validMoves.add(new ChessMove(myPosition, leftDiagonal, null));
         }
-        if (startCol < 8 && board.getPiece(rightDiagonal) != null && board.getPiece(leftDiagonal).getTeamColor() != pieceColor) {
+        if (startCol < 8 && board.getPiece(rightDiagonal) != null && board.getPiece(rightDiagonal).getTeamColor() != pieceColor) {
             validMoves.add(new ChessMove(myPosition, rightDiagonal, null));
         }
     }
