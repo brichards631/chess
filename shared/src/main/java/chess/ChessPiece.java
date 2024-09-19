@@ -101,10 +101,15 @@ public class ChessPiece {
 
         int direction = isWhite ? 1 : -1; //white pawns move up 1, black pawns move down 1
         int startingRow = isWhite ? 2 : 7;
+        int promotionRow = isWhite ? 8: 1; //white promotes at row 8, black at 1
 
         ChessPosition oneStepForward = new ChessPosition(startRow + direction, startCol);
         if (board.getPiece(oneStepForward) == null) {
-            validMoves.add(new ChessMove(myPosition, oneStepForward, null));
+            if (oneStepForward.getRow() == promotionRow){
+                addPromotionMoves(validMoves, myPosition, oneStepForward);
+            } else {
+                validMoves.add(new ChessMove(myPosition, oneStepForward, null));
+            }
         }
 
         // two spaces forward if starting
@@ -122,11 +127,26 @@ public class ChessPiece {
         ChessPosition rightDiagonal = new ChessPosition(startRow + direction, startCol + 1);
 
         if (startCol > 1 && board.getPiece(leftDiagonal) != null && board.getPiece(leftDiagonal).getTeamColor() != pieceColor) {
-            validMoves.add(new ChessMove(myPosition, leftDiagonal, null));
+            if (leftDiagonal.getRow() == promotionRow) {
+                addPromotionMoves(validMoves, myPosition, leftDiagonal);
+            } else {
+                validMoves.add(new ChessMove(myPosition, leftDiagonal, null));
+            }
         }
         if (startCol < 8 && board.getPiece(rightDiagonal) != null && board.getPiece(rightDiagonal).getTeamColor() != pieceColor) {
-            validMoves.add(new ChessMove(myPosition, rightDiagonal, null));
+            if (rightDiagonal.getRow() == promotionRow) {
+                addPromotionMoves(validMoves, myPosition, rightDiagonal);
+            } else {
+                validMoves.add(new ChessMove(myPosition, rightDiagonal, null));
+            }
         }
+    }
+
+    private void addPromotionMoves(Collection<ChessMove> validMoves, ChessPosition start, ChessPosition end) {
+        validMoves.add(new ChessMove(start, end, ChessPiece.PieceType.QUEEN));
+        validMoves.add(new ChessMove(start, end, ChessPiece.PieceType.ROOK));
+        validMoves.add(new ChessMove(start, end, ChessPiece.PieceType.BISHOP));
+        validMoves.add(new ChessMove(start, end, ChessPiece.PieceType.KNIGHT));
     }
 
     @Override
