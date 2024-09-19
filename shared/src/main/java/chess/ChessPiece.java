@@ -74,8 +74,59 @@ public class ChessPiece {
      * @return Collection of valid moves
      */
     public Collection<ChessMove> pieceMoves(ChessBoard board, ChessPosition myPosition) {
-        return new ArrayList<>();
-        //throw new RuntimeException("Not implemented");
+        Collection<ChessMove> validMoves = new ArrayList<>();
+
+        if (type == PieceType.PAWN) {
+            addPawnMoves(validMoves, board, myPosition);
+        }//will implement addPawnMoves below
+//        } else if (type == PieceType.ROOK) {
+//            addRookMoves(validMoves, board, myPosition);
+//        } else if (type == PieceType.KNIGHT) {
+//            addKnightMoves(validMoves, board, myPosition);
+//        } else if (type == PieceType.BISHOP) {
+//            addBishopMoves(validMoves, board, myPosition);
+//        } else if (type == PieceType.QUEEN) {
+//            addQueenMoves(validMoves, board, myPosition);
+//        } else if (type == PieceType.KING) {
+//            addKingMoves(validMoves, board, myPosition);
+//        }
+        return validMoves;
+    }
+
+    private void addPawnMoves(Collection<ChessMove> validMoves, ChessBoard board, ChessPosition myPosition){
+        int startRow = myPosition.getRow();
+        int startCol = myPosition.getColumn();
+
+        boolean isWhite = pieceColor == ChessGame.TeamColor.WHITE;
+
+        int direction = isWhite ? 1 : -1; //white pawns move up 1, black pawns move down 1
+        int startingRow = isWhite ? 2 : 7;
+
+        ChessPosition oneStepForward = new ChessPosition(startRow + direction, startCol);
+        if (board.getPieceAtPosition(oneStepForward) == null) {
+            validMoves.add(new ChessMove(myPosition, oneStepForward, null));
+        }
+
+        // two spaces forward if starting
+        if (startRow == startingRow) {
+            ChessPosition twoStepsForward = new ChessPosition(startRow + 2 * direction, startCol);
+            ChessPosition oneStepIntermediate = new ChessPosition(startRow + direction, startCol);
+
+            if (board.getPieceAtPosition(oneStepIntermediate) == null && board.getPieceAtPosition(twoStepsForward) == null) {
+                validMoves.add(new ChessMove(myPosition, twoStepsForward, null));
+            }
+        }
+
+        // capturing diagonally
+        ChessPosition leftDiagonal = new ChessPosition(startRow + direction, startCol - 1);
+        ChessPosition rightDiagonal = new ChessPosition(startRow + direction, startCol + 1);
+
+        if (startCol > 1 && board.isEnemyPieceAt(leftDiagonal, pieceColor)) {
+            validMoves.add(new ChessMove(myPosition, leftDiagonal, null));
+        }
+        if (startCol < 8 && board.isEnemyPieceAt(rightDiagonal, pieceColor)) {
+            validMoves.add(new ChessMove(myPosition, rightDiagonal, null));
+        }
     }
 
     @Override

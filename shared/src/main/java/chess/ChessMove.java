@@ -49,17 +49,14 @@ public class ChessMove {
 
     @Override
     public boolean equals(Object o) {
-        if (this == o) return true; // Same object reference
-        if (o == null || getClass() != o.getClass()) return false; // Null or different class
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
         ChessMove that = (ChessMove) o;
-
-        // Compare start position, end position, and promotion piece
         return Objects.equals(startPosition, that.startPosition) &&
                 Objects.equals(endPosition, that.endPosition) &&
                 Objects.equals(promotionPiece, that.promotionPiece);
     }
 
-    // Overriding hashCode to ensure consistency with equals
     @Override
     public int hashCode() {
         return Objects.hash(startPosition, endPosition, promotionPiece);

@@ -102,6 +102,17 @@ public class ChessBoard {
         }
         //throw new RuntimeException("Not implemented");
     }
+    public ChessPiece getPieceAtPosition(ChessPosition position) {
+        int row = position.getRow() - 1;
+        int col = position.getColumn() - 1;
+        return board[row][col];
+    }
+
+    public boolean isEnemyPieceAt(ChessPosition position, ChessGame.TeamColor teamColor) {
+        ChessPiece piece = getPieceAtPosition(position);
+        return piece != null && piece.getTeamColor() != teamColor;
+    }
+
     @Override
     public String toString() {
         StringBuilder boardString = new StringBuilder();
@@ -120,20 +131,19 @@ public class ChessBoard {
     }
     @Override
     public boolean equals(Object o) {
-        if (this == o) return true; // Same object reference
-        if (o == null || getClass() != o.getClass()) return false; // Null or different class
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
 
         ChessBoard that = (ChessBoard) o;
 
-        // Compare each position on the board
         for (int row = 0; row < 8; row++) {
             for (int col = 0; col < 8; col++) {
                 ChessPiece thisPiece = this.board[row][col];
                 ChessPiece thatPiece = that.board[row][col];
 
                 // Compare pieces at this position
-                if (thisPiece == null && thatPiece != null) return false; // Mismatch: one is null
-                if (thisPiece != null && !thisPiece.equals(thatPiece)) return false; // Pieces are not equal
+                if (thisPiece == null && thatPiece != null) return false;
+                if (thisPiece != null && !thisPiece.equals(thatPiece)) return false;
             }
         }
         return true; // If all pieces match, the boards are equal
