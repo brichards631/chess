@@ -80,9 +80,9 @@ public class ChessPiece {
             addPawnMoves(validMoves, board, myPosition); //will implement addPawnMoves below
         } else if (type == PieceType.ROOK) {
             addRookMoves(validMoves, board, myPosition);
+        } else if (type == PieceType.KNIGHT) {
+            addKnightMoves(validMoves, board, myPosition);
         }
-//        } else if (type == PieceType.KNIGHT) {
-//            addKnightMoves(validMoves, board, myPosition);
 //        } else if (type == PieceType.BISHOP) {
 //            addBishopMoves(validMoves, board, myPosition);
 //        } else if (type == PieceType.QUEEN) {
@@ -164,6 +164,29 @@ public class ChessPiece {
         for (int row = startRow + 1; row <= 8; row++) {
             ChessPosition newPosition = new ChessPosition(row, startCol);
             if (!addMoveOrStop(validMoves, board, myPosition, newPosition)) break;
+        }
+    }
+
+    private void addKnightMoves(Collection<ChessMove> validMoves, ChessBoard board, ChessPosition myPosition) {
+        int startRow = myPosition.getRow();
+        int startCol = myPosition.getColumn();
+
+        int[][] knightMoves = {
+                {2, 1}, {2, -1}, {-2, 1}, {-2, -1},
+                {1, 2}, {1, -2}, {-1, 2}, {-1, -2}
+        };
+        for (int[] move : knightMoves) {
+            int newRow = startRow + move[0];
+            int newCol = startCol + move[1];
+
+            if (newRow >= 1 && newRow <= 8 && newCol >= 1 && newCol <= 8) {
+                ChessPosition newPosition = new ChessPosition(newRow, newCol);
+                ChessPiece pieceAtDestination = board.getPiece(newPosition);
+
+                if (pieceAtDestination == null || pieceAtDestination.getTeamColor() != this.pieceColor) {
+                    validMoves.add(new ChessMove(myPosition, newPosition, null));
+                }
+            }
         }
     }
 
