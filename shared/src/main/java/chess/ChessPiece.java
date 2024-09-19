@@ -84,9 +84,9 @@ public class ChessPiece {
             addKnightMoves(validMoves, board, myPosition);
         } else if (type == PieceType.BISHOP) {
             addBishopMoves(validMoves, board, myPosition);
+        } else if (type == PieceType.QUEEN) {
+            addQueenMoves(validMoves, board, myPosition);
         }
-//        } else if (type == PieceType.QUEEN) {
-//            addQueenMoves(validMoves, board, myPosition);
 //        } else if (type == PieceType.KING) {
 //            addKingMoves(validMoves, board, myPosition);
 //        }
@@ -198,6 +198,36 @@ public class ChessPiece {
         addDiagonalMoves(validMoves, board, myPosition, 1, -1);
         addDiagonalMoves(validMoves, board, myPosition, -1, 1);
         addDiagonalMoves(validMoves, board, myPosition, -1, -1);
+    }
+
+    private void addQueenMoves(Collection<ChessMove> validMoves, ChessBoard board, ChessPosition myPosition) {
+        int startRow = myPosition.getRow();
+        int startCol = myPosition.getColumn();
+
+        addDiagonalMoves(validMoves, board, myPosition, 1, 1);
+        addDiagonalMoves(validMoves, board, myPosition, 1, -1);
+        addDiagonalMoves(validMoves, board, myPosition, -1, 1);
+        addDiagonalMoves(validMoves, board, myPosition, -1, -1);
+
+        //horizontal movement
+        for (int col = startCol - 1; col >= 1; col--) {
+            ChessPosition newPosition = new ChessPosition(startRow, col);
+            if (!addMoveOrStop(validMoves, board, myPosition, newPosition)) break;
+        }
+        for (int col = startCol + 1; col <= 8; col++) {
+            ChessPosition newPosition = new ChessPosition(startRow, col);
+            if (!addMoveOrStop(validMoves, board, myPosition, newPosition)) break;
+        }
+
+        //vertical movement
+        for (int row = startRow - 1; row >= 1; row--) {
+            ChessPosition newPosition = new ChessPosition(row, startCol);
+            if (!addMoveOrStop(validMoves, board, myPosition, newPosition)) break;
+        }
+        for (int row = startRow + 1; row <= 8; row++) {
+            ChessPosition newPosition = new ChessPosition(row, startCol);
+            if (!addMoveOrStop(validMoves, board, myPosition, newPosition)) break;
+        }
     }
 
     private void addPromotionMoves(Collection<ChessMove> validMoves, ChessPosition start, ChessPosition end) {
