@@ -102,16 +102,6 @@ public class ChessBoard {
         }
         //throw new RuntimeException("Not implemented");
     }
-    public ChessPiece getPieceAtPosition(ChessPosition position) {
-        int row = position.getRow() - 1;
-        int col = position.getColumn() - 1;
-        return board[row][col];
-    }
-
-    public boolean isEnemyPieceAt(ChessPosition position, ChessGame.TeamColor teamColor) {
-        ChessPiece piece = getPieceAtPosition(position);
-        return piece != null && piece.getTeamColor() != teamColor;
-    }
 
     @Override
     public String toString() {

@@ -103,7 +103,7 @@ public class ChessPiece {
         int startingRow = isWhite ? 2 : 7;
 
         ChessPosition oneStepForward = new ChessPosition(startRow + direction, startCol);
-        if (board.getPieceAtPosition(oneStepForward) == null) {
+        if (board.getPiece(oneStepForward) == null) {
             validMoves.add(new ChessMove(myPosition, oneStepForward, null));
         }
 
@@ -112,7 +112,7 @@ public class ChessPiece {
             ChessPosition twoStepsForward = new ChessPosition(startRow + 2 * direction, startCol);
             ChessPosition oneStepIntermediate = new ChessPosition(startRow + direction, startCol);
 
-            if (board.getPieceAtPosition(oneStepIntermediate) == null && board.getPieceAtPosition(twoStepsForward) == null) {
+            if (board.getPiece(oneStepIntermediate) == null && board.getPiece(twoStepsForward) == null) {
                 validMoves.add(new ChessMove(myPosition, twoStepsForward, null));
             }
         }
@@ -121,10 +121,10 @@ public class ChessPiece {
         ChessPosition leftDiagonal = new ChessPosition(startRow + direction, startCol - 1);
         ChessPosition rightDiagonal = new ChessPosition(startRow + direction, startCol + 1);
 
-        if (startCol > 1 && board.isEnemyPieceAt(leftDiagonal, pieceColor)) {
+        if (startCol > 1 && board.getPiece(leftDiagonal) != null && board.getPiece(leftDiagonal).getTeamColor() != pieceColor) {
             validMoves.add(new ChessMove(myPosition, leftDiagonal, null));
         }
-        if (startCol < 8 && board.isEnemyPieceAt(rightDiagonal, pieceColor)) {
+        if (startCol < 8 && board.getPiece(rightDiagonal) != null && board.getPiece(leftDiagonal).getTeamColor() != pieceColor) {
             validMoves.add(new ChessMove(myPosition, rightDiagonal, null));
         }
     }
