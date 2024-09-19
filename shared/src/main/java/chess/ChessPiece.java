@@ -98,41 +98,54 @@ public class ChessPiece {
 
         boolean isWhite = pieceColor == ChessGame.TeamColor.WHITE;
 
-        int direction = isWhite ? 1 : -1; //white pawns move up 1, black pawns move down 1
+        int direction = isWhite ? 1 : -1; // white pawns move up, black pawns move down
         int startingRow = isWhite ? 2 : 7;
-        int promotionRow = isWhite ? 8: 1; //white promotes at row 8, black at 1
+        int promotionRow = isWhite ? 8 : 1; // white promotes at row 8, black at 1
 
-        ChessPosition oneStepForward = new ChessPosition(startRow + direction, startCol);
-        if (board.getPiece(oneStepForward) == null) {
-            if (oneStepForward.getRow() == promotionRow){
+        // Move one step forward
+        int oneStepRow = startRow + direction;
+        if (isValidPosition(oneStepRow, startCol) && board.getPiece(new ChessPosition(oneStepRow, startCol)) == null) {
+            ChessPosition oneStepForward = new ChessPosition(oneStepRow, startCol);
+            if (oneStepForward.getRow() == promotionRow) {
                 addPromotionMoves(validMoves, myPosition, oneStepForward);
             } else {
                 validMoves.add(new ChessMove(myPosition, oneStepForward, null));
             }
         }
 
-        // two spaces forward if starting
+        // Move two steps forward from starting row
         if (startRow == startingRow) {
-            ChessPosition twoStepsForward = new ChessPosition(startRow + 2 * direction, startCol);
-            ChessPosition oneStepIntermediate = new ChessPosition(startRow + direction, startCol);
+            int twoStepRow = startRow + 2 * direction;
+            int intermediateRow = startRow + direction;
 
-            if (board.getPiece(oneStepIntermediate) == null && board.getPiece(twoStepsForward) == null) {
+            if (isValidPosition(twoStepRow, startCol) &&
+                    board.getPiece(new ChessPosition(intermediateRow, startCol)) == null &&
+                    board.getPiece(new ChessPosition(twoStepRow, startCol)) == null) {
+
+                ChessPosition twoStepsForward = new ChessPosition(twoStepRow, startCol);
                 validMoves.add(new ChessMove(myPosition, twoStepsForward, null));
             }
         }
 
-        // capturing diagonally
-        ChessPosition leftDiagonal = new ChessPosition(startRow + direction, startCol - 1);
-        ChessPosition rightDiagonal = new ChessPosition(startRow + direction, startCol + 1);
+        // Capture diagonally to the left
+        int leftDiagonalCol = startCol - 1;
+        if (isValidPosition(oneStepRow, leftDiagonalCol) && board.getPiece(new ChessPosition(oneStepRow, leftDiagonalCol)) != null &&
+                board.getPiece(new ChessPosition(oneStepRow, leftDiagonalCol)).getTeamColor() != pieceColor) {
 
-        if (startCol > 1 && board.getPiece(leftDiagonal) != null && board.getPiece(leftDiagonal).getTeamColor() != pieceColor) {
+            ChessPosition leftDiagonal = new ChessPosition(oneStepRow, leftDiagonalCol);
             if (leftDiagonal.getRow() == promotionRow) {
                 addPromotionMoves(validMoves, myPosition, leftDiagonal);
             } else {
                 validMoves.add(new ChessMove(myPosition, leftDiagonal, null));
             }
         }
-        if (startCol < 8 && board.getPiece(rightDiagonal) != null && board.getPiece(rightDiagonal).getTeamColor() != pieceColor) {
+
+        // Capture diagonally to the right
+        int rightDiagonalCol = startCol + 1;
+        if (isValidPosition(oneStepRow, rightDiagonalCol) && board.getPiece(new ChessPosition(oneStepRow, rightDiagonalCol)) != null &&
+                board.getPiece(new ChessPosition(oneStepRow, rightDiagonalCol)).getTeamColor() != pieceColor) {
+
+            ChessPosition rightDiagonal = new ChessPosition(oneStepRow, rightDiagonalCol);
             if (rightDiagonal.getRow() == promotionRow) {
                 addPromotionMoves(validMoves, myPosition, rightDiagonal);
             } else {
@@ -299,6 +312,10 @@ public class ChessPiece {
                 break;
             }
         }
+    }
+
+    private boolean isValidPosition(int row, int col) {
+        return row >= 1 && row <= 8 && col >= 1 && col <= 8;
     }
 
     @Override
